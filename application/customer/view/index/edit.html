@@ -1,0 +1,63 @@
+<form class="layui-form layui-box modal-form-box" action="{:request()->url()}" data-auto="true" method="post">
+    <div class="layui-form-item">
+        <label class="layui-form-label">客户姓名</label>
+        <div class="layui-input-block">
+            <input type="text" name="name" value="{$vo.name|default=''}" required="required" title="请填写客户姓名" placeholder="客户姓名"
+                   class="layui-input">
+            <p class="help-block color-desc"><b>必填</b>,请真实填写客户姓名</p>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">身份证号</label>
+    <div class="layui-input-block">
+        <input type="text" name="sfz" value='{$vo.sfz|default=""}' required="required" title="请填写身份证号" placeholder="身份证号"
+               class="layui-input">
+        <p class="help-block color-desc"><b>必填</b>,请真实填写客户身份证号</p>
+    </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">电话</label>
+        <div class="layui-input-block">
+            <input type="text" name="mobile" value='{$vo.mobile|default=""}' required="required" title="请填写电话" placeholder="电话"
+                   class="layui-input">
+            <p class="help-block color-desc"><b>必填</b>,请真实填写客户电话</p>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">单位</label>
+        <div class="layui-input-block">
+            <input type="text" name="school" value='{$vo.school|default=""}' required="required" title="请填写单位" placeholder="单位"
+                   class="layui-input">
+            <p class="help-block color-desc"><b>必填</b>,请真实填写客户单位</p>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">客户状态</label>
+        <div class="layui-input-block">
+            <select name='status' class='layui-select full-width' lay-ignore>
+
+                <option {if $vo.status=='99'}selected {/if}value='99'>启用</option>
+
+                <option {if $vo.status=='-99'}selected {/if} value='-99'>禁用</option>
+
+            </select>
+            <p class="help-block color-desc"><b>必填</b>，请选择客户状态）</p>
+        </div>
+    </div>
+
+    <div class="hr-line-dashed"></div>
+
+    <div class="layui-form-item text-center">
+        <input type='hidden' value='{$vo.id}' name='id'>
+        <button class="layui-btn" type='submit'>保存数据</button>
+        <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
+    </div>
+    <script>
+        require(['bootstrap.typeahead'], function () {
+            var subjects = JSON.parse('');
+            $('.typeahead').typeahead();
+        });
+    </script>
+
+</form>

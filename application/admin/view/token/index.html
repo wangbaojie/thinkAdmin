@@ -1,0 +1,160 @@
+{extend name='admin@public/content'}
+
+{block name="button"}
+
+<!--{if auth("$classuri/add")}-->
+<button data-modal='{:url("$classuri/add")}' data-title="添加快递" class='layui-btn layui-btn-sm layui-btn-primary'>添加用户
+</button>
+<!--{/if}-->
+
+<!--{if auth("$classuri/del")}-->
+<button data-update data-field='delete' data-action='{:url("$classuri/del")}'
+        class='layui-btn layui-btn-sm layui-btn-primary'>删除用户
+</button>
+<!--{/if}-->
+
+{/block}
+
+{block name="content"}
+
+<!-- 表单搜索 开始 -->
+<form class="layui-form layui-form-pane form-search" action="{:request()->url()}" onsubmit="return false" method="get">
+
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">用户姓名</label>
+        <div class="layui-input-inline">
+            <input name="customer_name" value="{$Think.get.customer_name|default=''}" placeholder="请输入用户姓名"
+                   class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">用户手机</label>
+        <div class="layui-input-inline">
+            <input name="customer_mobile" value="{$Think.get.customer_mobile|default=''}" placeholder="请输入用户手机"
+                   class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-inline">
+        <label class="layui-form-label">添加时间</label>
+        <div class="layui-input-inline">
+            <input name="date" id="range-date" value="{$Think.get.date|default=''}" placeholder="请选择添加时间"
+                   class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-inline">
+        <button class="layui-btn layui-btn-primary"><i class="layui-icon">&#xe615;</i> 搜 索</button>
+    </div>
+
+</form>
+
+<script>
+    window.laydate.render({range: true, elem: '#range-date'});
+    window.form.render();
+</script>
+<!-- 表单搜索 结束 -->
+
+<form onsubmit="return false;" data-auto="true" method="post">
+    <input type="hidden" value="resort" name="action"/>
+    {if empty($list)}
+    <p class="help-block text-center well">没 有 记 录 哦！</p>
+    {else}
+    <table class="layui-table" lay-skin="line" lay-size="sm">
+        <thead>
+        <tr>
+            <th class='list-table-check-td'>
+                <input data-auto-none="none" data-check-target='.list-check-box' type='checkbox'/>
+            </th>
+
+            <th class='text-left'>ID</th>
+            <th class='text-left'>域名</th>
+            <th class='text-left'>key</th>
+            <th class='text-left'>机构名称</th>
+            <th class='text-left'>ip</th>
+            <th class='text-left'>平台</th>
+            <th class='text-left'>版本</th>
+            <th class='text-left'>结束日期</th>
+            <th class='text-left'>创建日期</th>
+            <th class='text-left'>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach $list as $key=>$vo}
+        <tr>
+            <td class='list-table-check-td'>
+                <input class="list-check-box" value='{$vo.id}' type='checkbox'/>
+            </td>
+            <td class='text-left'>{$vo.id}</td>
+            <td class='text-left'>{$vo.domain}</td>
+            <td class='text-left'>{$vo.key}</td>
+            <td class='text-left'>{$vo.name}</td>
+            <td class='text-left'>{$vo.ip}</td>
+            <td class='text-left'>
+                {if $vo.type==1}信贷云{/if}
+                {if $vo.type==2}中控{/if}
+            </td>
+            <td class='text-left'>
+                {if $vo.version>0}
+                {$vo.version}
+                {else/}
+                <span style="color: #00B83F">
+                   已授权版
+               </span>
+                {/if}
+            </td>
+            <td class='text-left'>
+                {if $vo.status==-1}
+                <span style="color: red">
+                禁用中
+                </span>
+                {else/}
+                {if $vo.end_date>0}
+                {$vo.end_date|date='Y年m月d日 H:i:s'}
+                {else/}
+                <span style="color: #00B83F">
+                永久使用
+                </span>
+                {/if}
+                {/if}
+            </td>
+            <td class='text-left'>{$vo.created_at|date='Y年m月d日 H:i:s'}</td>
+            <td class='text-left nowrap'>
+                <span class="text-explode">|</span>
+                <!--{if auth("$classuri/edit")}-->
+                {if $vo.end_date>0}
+                <a data-title="编辑试用" data-modal='{:url("$classuri/edit")}?id={$vo.id}'>编辑试用</a>
+                {else/}
+                <a style="color: #cccccc" disabled="true">编辑试用</a>
+                {/if}
+                <!--{/if}-->
+                <!--{if auth("$classuri/forever")}-->
+                <span class="text-explode">|</span>
+                {if $vo.end_date>0}
+                <a data-title="永久授权" data-modal='{:url("$classuri/forever")}?id={$vo.id}'>永久授权</a>
+                {else/}
+                <a style="color: #cccccc" disabled="true">永久授权</a>
+                {/if}
+                <!--{/if}-->
+                <!--{if auth("$classuri/change")}-->
+                <span class="text-explode">|</span>
+                <a data-title="查看变更记录" data-modal='{:url("$classuri/change")}?pid={$vo.id}'>查看变更记录</a>
+                <!--{/if}-->
+                <!--{if auth("$classuri/change")}-->
+                <span class="text-explode">|</span>
+                {if $vo.status==99}
+                <a data-title="查看变更记录" data-modal='{:url("$classuri/prohibit")}?id={$vo.id}'>禁用</a>
+                {elseif $vo.status==-1}
+                <a data-title="查看变更记录" data-modal='{:url("$classuri/prohibit")}?id={$vo.id}'>启用</a>
+                {/if}
+                <!--{/if}-->
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+    {if isset($page)}<p>{$page|raw}</p>{/if}
+    {/if}
+</form>
+{/block}

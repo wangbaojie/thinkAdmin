@@ -1,0 +1,26 @@
+<form class="layui-form layui-box modal-form-box" action="{:request()->url()}" data-auto="true" method="post">
+    <div class="layui-form-item">
+        <label class="layui-form-label">试用结束</label>
+        <div class="layui-input-block">
+            <input type="text" name="end_date" id="end-date" value="{$vo.end_date|default=''}" required="required"
+                   title="请选择结束日期"
+                   placeholder="请选择结束日期"
+                   class="layui-input">
+            <p class="help-block color-desc">请选择结束日期</p>
+        </div>
+    </div>
+    <div class="hr-line-dashed"></div>
+
+    <div class="layui-form-item text-center">
+        <input type='hidden' value='{$vo.id}' name='id'>
+        <button class="layui-btn" type='submit'>保存数据</button>
+        <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-close>取消编辑</button>
+    </div>
+    <script>
+
+        window.laydate.render({range: false, elem: "#end-date"});
+        window.form.render();
+    </script>
+</form>
+
+

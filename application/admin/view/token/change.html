@@ -1,0 +1,32 @@
+<form onsubmit="return false;" data-auto="true" method="post">
+    <input type="hidden" value="resort" name="action"/>
+    {if empty($domain_ip)}
+    <p class="help-block text-center well">没 有 记 录 哦！</p>
+    {else}
+    <table class="layui-table" lay-skin="line" lay-size="sm">
+        <thead>
+        <tr>
+            <th class='text-left'>ID</th>
+            <th class='text-left'>域名</th>
+            <th class='text-left'>ip</th>
+            <th class='text-left'>网站title</th>
+            <th class='text-left'>变更日期</th>
+            <th class='text-left'>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach $domain_ip as $key=>$vo}
+        <tr>
+            <td class='text-left'>{$vo.id}</td>
+            <td class='text-left'>{$vo.domain}</td>
+            <td class='text-left'>{$vo.ip}</td>
+            <td class='text-left'>{$vo.title}</td>
+            <td class='text-left'>{$vo.created_at|date='Y年m月d日 H:i:s'}</td>
+            <td></td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+    {if isset($page)}<p>{$page|raw}</p>{/if}
+    {/if}
+</form>
